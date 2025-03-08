@@ -1,0 +1,22 @@
+package resume;
+import java.util.*;
+import java.io.*; 
+import java.util.regex.*;
+
+public class Resume {
+
+	String name;
+	String skills; 
+	int experience;
+
+	public Resume(String name, String skills, int experience) {
+	    this.name = name;
+	    this.skills = skills;
+	    this.experience = experience;
+	}
+
+	@Override
+	public String toString() {
+	    return "Name: " + name + ", Skills: " + skills + ", Experience: " + experience + " years";
+	}
+	}
