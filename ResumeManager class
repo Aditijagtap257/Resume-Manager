@@ -1,0 +1,91 @@
+package resume;
+import java.util.*;
+import java.io.*;
+import java.util.regex.*;
+class ResumeManager {
+    private List<Resume> resumes;
+
+    public ResumeManager() {
+        this.resumes = new LinkedList<>();
+    }
+
+    public void importResumesFromFile(String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                extractResumeData(line);
+            }
+            System.out.println("Resumes imported successfully from file.");
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+
+    private void extractResumeData(String line) {
+        // Regex to find experience (e.g., "3 years", "5 years experience")
+        Pattern experiencePattern = Pattern.compile("(\\d+)\\s*(?:years|yrs|year|yr)", Pattern.CASE_INSENSITIVE);
+        Matcher experienceMatcher = experiencePattern.matcher(line);
+
+        int experience = 0;
+        if (experienceMatcher.find()) {
+            experience = Integer.parseInt(experienceMatcher.group(1));
+        }
+
+        // Extract skills by searching for keywords
+        List<String> commonSkills = Arrays.asList("Java", "Python", "C++", "JavaScript", "React", "SQL", "AI", "ML");
+        StringBuilder skills = new StringBuilder();
+        for (String skill : commonSkills) {
+            if (line.toLowerCase().contains(skill.toLowerCase())) {
+                if (skills.length() > 0) skills.append(", ");
+                skills.append(skill);
+            }
+        }
+
+        // Extract name (first word assumed to be name)
+        String[] words = line.split(" ");
+        String name = words.length > 0 ? words[0] : "Unknown";
+
+        if (!skills.toString().isEmpty() && experience > 0) {
+            resumes.add(new Resume(name, skills.toString(), experience));
+        }
+    }
+
+    public void searchBySkill(String skillsInput) {
+        String[] skillList = skillsInput.split(","); // Split input by comma
+        boolean found = false;
+
+        for (Resume r : resumes) {
+            for (String skill : skillList) {
+                if (r.skills.toLowerCase().contains(skill.trim().toLowerCase())) {
+                    System.out.println(r);
+                    found = true;
+                    break; // Stop checking after the first match in the resume
+                }
+            }
+        }
+
+        if (!found) {
+            System.out.println("No resumes found with skills: " + skillsInput);
+        }
+    }
+
+
+    public void sortByExperience() {
+        resumes.sort(Comparator.comparingInt(r -> -r.experience)); // Descending order
+        System.out.println("Resumes sorted by experience:");
+        displayResumes();
+    }
+    public void displayResumes() {
+        if (resumes.isEmpty()) {
+            System.out.println("No resumes available.");
+            return;
+        }
+        for (Resume r : resumes) {
+            System.out.println(r);
+        }
+    }
+  
+
+}
+	
+
