@@ -1,0 +1,47 @@
+package resume;
+
+import java.util.Scanner;
+
+public class Main { 
+	public static void main(String[] args) { 
+	Scanner scanner = new Scanner(System.in); 
+	ResumeManager manager = new ResumeManager();
+
+
+System.out.print("Enter File Path: ");
+String filePath = scanner.nextLine();
+manager.importResumesFromFile(filePath);
+
+while (true) {
+    System.out.println("\nResume Manager System");
+    System.out.println("1. Search by Skill");
+    System.out.println("2. Sort by Experience");
+    System.out.println("3. Display All Resumes");
+    System.out.println("4. Exit");
+    System.out.print("Choose an option: ");
+    
+    int choice = scanner.nextInt();
+    scanner.nextLine(); // Consume newline
+
+    switch (choice) {
+        case 1:
+            System.out.print("Enter Skill to Search: ");
+            String skill = scanner.nextLine();
+            manager.searchBySkill(skill);
+            break;
+        case 2:
+            manager.sortByExperience();
+            break;
+        case 3:
+            manager.displayResumes();
+            break;
+        case 4:
+            System.out.println("Exiting...");
+            scanner.close();
+            return;
+        default:
+            System.out.println("Invalid option. Try again.");
+    }
+}
+}
+}
