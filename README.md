@@ -32,6 +32,8 @@ Implement a Java Swing or JavaFX-based UI for better usability.
 🔹 Database Integration 🗄️
 Store and retrieve resumes from a database instead of a text file.
 
+I have completed setup using CircleCi
+
 🔹 Resume Ranking System 🏆
 Rank candidates based on multiple factors like experience, skill set, and project involvement.
 
